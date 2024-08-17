@@ -5,7 +5,7 @@ from pygame.locals import *
 from utils import draw_text, get_key_press
 pygame.init()
 
-config = GameConfig(background = GRAY, size = 4)
+config = GameConfig(background = GRAY, size = 6)
 
 # Create the screen object
 # The size is determined by the constant SCREEN_WIDTH and SCREEN_HEIGHT
@@ -25,9 +25,10 @@ font = pygame.font.Font(None, 24)
 while running:
     for event in pygame.event.get():
         if event.type == KEYDOWN:
-            direction, running = get_key_press(event)
-            game.play_game(direction = direction)
-            board = game.get_board()
+            directioned_pressed, direction, running = get_key_press(event)
+            if directioned_pressed:
+                game.play_game(direction = direction)
+                board = game.get_board()
 
         elif event.type == QUIT:
             print('QUITTING')

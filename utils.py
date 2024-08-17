@@ -8,6 +8,8 @@ def draw_text(text, pos, colour, font, screen):
 
 def get_key_press(event):
     running = True
+    direction_pressed = False
+    direction = False
     if event.key == K_ESCAPE:
         running = False
     elif event.key == K_UP:
@@ -18,4 +20,6 @@ def get_key_press(event):
         direction = 'left'
     elif event.key == K_RIGHT:
         direction = 'right'    
-    return direction, running     
+    if direction:
+        direction_pressed = True
+    return direction_pressed, direction, running     
