@@ -1,25 +1,17 @@
-from pygame.locals import *
-
-
-def draw_text(text, pos, colour, font, screen):
-    img = font.render(text, True, colour)
-    screen.blit(img, pos)
-
-
 def get_key_press(event):
     running = True
     direction_pressed = False
-    direction = False
-    if event.key == K_ESCAPE:
+    direction = None
+    if event == 'Escape':
         running = False
-    elif event.key == K_UP:
+    elif event == 'ArrowUp':
         direction = 'up'
-    elif event.key == K_DOWN:
-        direction = 'down'    
-    elif event.key == K_LEFT:
+    elif event == 'ArrowDown':
+        direction = 'down'
+    elif event == 'ArrowLeft':
         direction = 'left'
-    elif event.key == K_RIGHT:
-        direction = 'right'    
+    elif event == 'ArrowRight':
+        direction = 'right'
     if direction:
         direction_pressed = True
-    return direction_pressed, direction, running     
+    return direction_pressed, direction, running
