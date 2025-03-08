@@ -1,7 +1,6 @@
 from fasthtml.common import *
 from game import Game
 from config import GameConfig
-from utils import get_key_press
 
 app = FastHTML(exts='ws')
 rt = app.route
