@@ -50,8 +50,18 @@ def choose_size():
                 .container {
                     text-align: center;
                 }
+                .buttons {
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                }
                 .button {
                     margin: 5px;
+                    font-size: 24px;
+                    color: white;
+                    background-color: black;
+                    text-align: center;
+                    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
                 }
             """)
         ),
@@ -59,7 +69,7 @@ def choose_size():
             Div(cls='container')(
                 H1("Choose Grid Size", cls='title has-text-centered'),
                 Div(cls='buttons')(
-                    *[Button(str(size), cls='button is-primary', onclick=f"startGame({size})") for size in range(4, 13)]
+                    *[Button(str(size), cls='button', onclick=f"startGame({size})") for size in range(4, 13)]
                 ),
                 Script("""
                     function startGame(size) {
@@ -79,7 +89,6 @@ def choose_size():
             )
         )
     )
-
 @rt('/start', methods=['POST'])
 async def start(request):
     data = await request.json()
@@ -112,6 +121,14 @@ def game_page():
                     }
                     .container {
                         text-align: center;
+                    }
+                    .button {
+                        margin: 5px;
+                        font-size: 24px;
+                        color: black;
+                        text-align: center;
+                        font-weight: bold;
+                        text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
                     }
                 """)
             ),
@@ -153,9 +170,24 @@ def game_page():
                     font-size: 24px;
                     border-radius: 15px;
                     background-color: #ccc;
+                    color: black;
+                    text-align: center;
+                    font-weight: bold;
+                    position: relative;
+                }}
+                .tile::before {{
+                    content: attr(data-value);
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: white;
+                    font-size: 24px;
+                    font-weight: bold;
+                    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
                 }}
                 .new-tile {{
-                    animation: fade-in 1s ease;
+                    animation: fade-in 0.5s ease;
                 }}
                 @keyframes fade-in {{
                     0% {{
@@ -176,19 +208,27 @@ def game_page():
                     border-radius: 10px;
                     text-align: center;
                 }}
+                .button {{
+                    margin: 5px;
+                    font-size: 24px;
+                    color: black;
+                    text-align: center;
+                    font-weight: bold;
+                    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+                }}
             """)
         ),
         Body(
             Div(cls='board')(
-                *[Div(cls=f'tile { "new-tile" if tile.new else "" }', style=f'background-color: {tile_colour_dict.get(tile.value, default_tile_color)};')(
+                *[Div(cls=f'tile { "new-tile" if tile.new else "" }', style=f'background-color: {tile_colour_dict.get(tile.value, default_tile_color)};', data_value=str(tile.value) if tile.value else '')(
                     str(tile.value) if tile.value else ''
                 ) for row in board for tile in row]
             ),
             Div(id='game-over', cls='game-over', style='display: none;')(
                 H1("Game Over"),
-                Button("Restart", cls='button is-primary', onclick="window.location.href='/'")
+                Button("Restart", cls='button', onclick="window.location.href='/'")
             ),
-            Button("Restart", cls='button is-primary', onclick="window.location.href='/'"),
+            Button("Restart", cls='button', onclick="window.location.href='/'"),
             Script("""
                 document.addEventListener('keydown', function(event) {
                     let direction;
@@ -222,6 +262,45 @@ def game_page():
                         }
                     });
                 });
+
+                let touchstartX = 0;
+                let touchstartY = 0;
+                let touchendX = 0;
+                let touchendY = 0;
+
+                function handleGesture() {
+                    let direction;
+                    if (touchendX < touchstartX) direction = 'left';
+                    if (touchendX > touchstartX) direction = 'right';
+                    if (touchendY < touchstartY) direction = 'up';
+                    if (touchendY > touchstartY) direction = 'down';
+                    if (direction) {
+                        fetch('/move', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ direction: direction })
+                        }).then(response => response.json()).then(data => {
+                            if (data.running === false) {
+                                document.getElementById('game-over').style.display = 'block';
+                            } else {
+                                location.reload();
+                            }
+                        });
+                    }
+                }
+
+                document.addEventListener('touchstart', function(event) {
+                    touchstartX = event.changedTouches[0].screenX;
+                    touchstartY = event.changedTouches[0].screenY;
+                }, false);
+
+                document.addEventListener('touchend', function(event) {
+                    touchendX = event.changedTouches[0].screenX;
+                    touchendY = event.changedTouches[0].screenY;
+                    handleGesture();
+                }, false);
             """)
         )
     )

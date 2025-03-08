@@ -15,6 +15,9 @@ class Board:
         }
 
 
+    def get_tile_values(self):
+        return np.array([[tile.value for tile in row] for row in self.board])
+
     def make_board(self, size):
         board = np.array([[Tile(value=None) for n in range(size)] for n in range(size)])
         board = self.populate_random_empty_tiles(board, start=True)
@@ -63,31 +66,18 @@ class Board:
     def make_move(self, direction):
         direction = self.direction_mapping[direction]
         board = self.board
-        
-        board_values = self.shift_board_tiles(
-            self.board_tiles_to_values(board), 
-            direction
-        )
-     
-
-        board_values = self.combine_tiles(
-            board_values, 
-            direction
-        )
-
-
-        
+        board_values = self.shift_board_tiles(self.board_tiles_to_values(board), direction)
+        board_values = self.combine_tiles(board_values, direction)
         self.board = self.board_values_to_tiles(board, board_values)
         
         for row in board:
             for tile in row:
                 tile.new = False
 
-        print('you made a move')
+        # print('you made a move')
 
 
     def fill_squares_and_check(self):
-        print('filling empty squares with numbers')
         self.board = self.populate_random_empty_tiles(self.board)
         self.check_grid_full()
 
@@ -105,11 +95,11 @@ class Board:
 
 
     def shift_row_tiles(self, row):
-        print('pre shifted row', row)
+        # print('pre shifted row', row)
         row = row[row != np.array(None)]
         row = np.append([None for n in range(self.size - len(row))], row)
-        print('post shifted row', row)
-        print('')
+        # print('post shifted row', row)
+        # print('')
         return row
 
 
@@ -136,18 +126,18 @@ class Board:
 
 
     def combine_tiles(self, board, direction):
-        print('In combine_tiles_function')
-        print(board)
+        # print('In combine_tiles_function')
+        # print(board)
         # I think there is a problem in either this logic or the shift_tiles logic
         # rotate board accordingly: right = 0, up = 1, left = 2, down = 3
         board = np.rot90(board, direction)
         # flipping board for ease in logic (looking backwards through numbers to check what to combine first)
         board_reversed = np.fliplr(board)
         for row in board_reversed:
-            print(row)
+            # print(row)
             # only enter this nested loop if at least 2 adjacent elements are equal.
             if not self.check_any_adjacent_numbers_equal(row):
-                print('could not find any adjacent numbers in row')
+                # print('could not find any adjacent numbers in row')
                 continue
 
             
