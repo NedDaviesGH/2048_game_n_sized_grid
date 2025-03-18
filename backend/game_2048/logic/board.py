@@ -1,5 +1,5 @@
 import numpy as np
-from tile import Tile
+from .tile import Tile
 
 class Board:
     def __init__(self, size):
