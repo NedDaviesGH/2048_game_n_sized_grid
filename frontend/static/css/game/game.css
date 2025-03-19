@@ -1,11 +1,28 @@
-body {
+/* General body styling for all game pages */
+.body-game {
     background-color: #808080;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     margin: 0;
 }
+
+/* Game container */
+.game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Game grid styling */
+.board {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 100px); /* Adjust based on tile size */
+    gap: 10px; /* Add spacing between tiles */
+    justify-content: center;
+    align-items: center;
+}
+
 .tile {
     width: 100px;
     height: 100px;
@@ -20,6 +37,7 @@ body {
     font-weight: bold;
     position: relative;
 }
+
 .tile::before {
     content: attr(data-value);
     position: absolute;
@@ -31,17 +49,21 @@ body {
     font-weight: bold;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
+
 .new-tile {
     animation: fade-in 0.5s ease;
 }
+
 @keyframes fade-in {
     0% {
         background-color: yellow;
     }
     100% {
-        background-color: #eee4da; /* Color for tile with value 2 */
+        background-color: #eee4da; 
     }
 }
+
+/* Game over screen */
 .game-over {
     position: absolute;
     top: 50%;
@@ -52,12 +74,4 @@ body {
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-}
-.button {
-    margin: 5px;
-    font-size: 24px;
-    color: black;
-    text-align: center;
-    font-weight: bold;
-    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
 }

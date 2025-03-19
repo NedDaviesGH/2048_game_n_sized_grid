@@ -1,4 +1,6 @@
 from fasthtml.common import *
+from backend.components.sidebar import Sidebar
+from backend.components.layout import BaseLayout
 from .logic.game import Game
 from .logic.config import GameConfig
 
@@ -28,26 +30,26 @@ def register_game_routes(app):
     rt = app.route
     @rt('/choose_size')
     def choose_size():
-        return Html(
+        content = Html(
             Head(
                 Title("Choose Grid Size"),
                 Link(rel="icon", href="data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23FFA500'/></svg>"),
-                Link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"),
-                Link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"),
-                Link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css"),
-                Link(rel='stylesheet', href="css/game/choose_size.css")
             ),
-            Body(
-                Div(cls='container')(
-                    H1("Choose Grid Size", cls='title has-text-centered'),
+            Body(cls = "body-game")(
+                Div(cls='game-container')(
+                    H1("NxN 2048", cls='title is-1'),
+                    H1("Choose Grid Size", cls='title'),
                     Div(cls='buttons')(
-                        *[Button(str(size), cls='button', onclick=f"startGame({size})") for size in range(4, 13)]
+                        *[Button(str(size), cls='button', onclick=f"startGame({size})") for size in range(4, 9)]
                     ),
                     Button("Back", cls="button is-danger", onclick="window.location.href='/'"),  # Back button
                     Script(src='/js/game/grid_size.js')
                 )
             )
         )
+        
+        return BaseLayout("2048", content)
+    
     @rt('/start', methods=['POST'])
     async def start(request):
         data = await request.json()
@@ -62,14 +64,10 @@ def register_game_routes(app):
     def game_page():
         global game, config
         if game is None:
-            return Html(
+            content = Html(
                 Head(
                     Title("Error"),
                     Link(rel="icon", href="data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23FFA500'/></svg>"),
-                    Link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"),
-                    Link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"),
-                    Link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css"),
-                    Link(rel='stylesheet', href="css/game/game_page.css"),
                     Style(f"""
                         .board {{
                             display: grid;
@@ -78,7 +76,7 @@ def register_game_routes(app):
                         }}
                     """)
                 ),
-                Body(
+                Body(cls = "game-container")(
                     Div(cls='board')(
                         *[Div(cls=f'tile { "new-tile" if tile.new else "" }', style=f'background-color: {tile_colour_dict.get(tile.value, default_tile_color)};', data_value=str(tile.value) if tile.value else '')(
                             str(tile.value) if tile.value else ''
@@ -92,15 +90,12 @@ def register_game_routes(app):
                     Script(src='/js/game/game_page.js')
                 )
             )
+            return BaseLayout("2048", content) 
         board = game.get_board()
-        return Html(
+        content = Html(
             Head(
                 Title("2ned48"),
                 Link(rel="icon", href="data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23FFA500'/></svg>"),
-                Link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"),
-                Link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"),
-                Link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css"),
-                Link(rel='stylesheet', href="css/game/game_page_movement.css"),
                 Style(f"""
                     .board {{
                         display: grid;
@@ -109,7 +104,8 @@ def register_game_routes(app):
                     }}
                 """)
             ),
-            Body(
+            Body(cls = "body-game")(
+                Div(cls = "game-container")(
                 Div(cls='board')(
                     *[Div(cls=f'tile { "new-tile" if tile.new else "" }', style=f'background-color: {tile_colour_dict.get(tile.value, default_tile_color)};', data_value=str(tile.value) if tile.value else '')(
                         str(tile.value) if tile.value else ''
@@ -122,7 +118,9 @@ def register_game_routes(app):
                 Button("Restart", cls='button', onclick="window.location.href='/choose_size'"),
                 Script(src='/js/game/game_page_movement.js')
             )
+            )
         )
+        return BaseLayout("2048", content)
 
     @rt('/move', methods=['POST'])
     async def move(request):

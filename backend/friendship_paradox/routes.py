@@ -1,4 +1,6 @@
 from fasthtml.common import *
+from backend.components.sidebar import Sidebar
+from backend.components.layout import BaseLayout
 from .logic.friends import make_friends, analyse_friends
 
 def register_friends_routes(app):
@@ -21,17 +23,15 @@ def register_friends_routes(app):
             friends = make_friends(num_friends, is_normal)
             person_mean, friend_mean = analyse_friends(friends)
 
-        return Html(
+        content = Html(
             Head(
                 Title("Friendship Paradox"),
                 Link(rel="icon", href="data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23FFA500'/></svg>"),
-                Link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"),
-                Link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"),
-                Link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css"),
-                # Link(rel='stylesheet', href="css/friends/friends_page.css")
+                # Link(rel="stylesheet", href="/css/components/sidebar.css"),
             ),
             Body(
                 Div(cls='container')(
+                    
                     H1("Friendship Paradox", cls='title has-text-centered'),
                     Div(cls='content')(
                         H2("Demonstration of the friendship paradox i.e. your friends are more likely to have more friends than you", cls='subtitle'),
@@ -71,3 +71,5 @@ def register_friends_routes(app):
                 )
             )
         )
+        
+        return BaseLayout("Friends", content)

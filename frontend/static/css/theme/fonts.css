@@ -1,0 +1,9 @@
+/* Apply Lato globally */
+body {
+    font-family: 'Lato', sans-serif;
+}
+
+/* Optional: Override Bulma's default font-family */
+.is-family-primary {
+    font-family: 'Lato', sans-serif !important;
+}

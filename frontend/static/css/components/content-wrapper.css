@@ -1,0 +1,22 @@
+/* Center the content and limit its width */
+.content-wrapper {
+    max-width: 100ch; /* Limit the width to 60 characters for better readability */
+    margin: 0 auto; /* Center the content horizontally */
+    padding: 2rem; /* Add padding around the content */
+    text-align: left; /* Ensure text is left-aligned */
+}
+
+
+/* Optional: Style for paragraphs */
+.content-wrapper p {
+    line-height: 1.8; /* Improve readability with increased line height */
+    font-size: 1rem; /* Use relative font size */
+    color: #333; /* Neutral text color */
+}
+
+/* Optional: Add responsiveness */
+@media (max-width: 768px) {
+    .content-wrapper {
+        padding: 1rem; /* Reduce padding on smaller screens */
+    }
+}

@@ -1,25 +1,24 @@
 from fasthtml.common import *
+from backend.components.layout import BaseLayout
+from backend.components.sidebar import Sidebar  # Import the Sidebar component
 
 def register_home_routes(app):
     rt = app.route
     @rt('/')
     def home_page():
-        return Html(
+        content = Html(
             Head(
-                Title("Home - 2048 Game"),
-                Link(rel="stylesheet", href="/css/home/home.css")  
+                Title("Neddy"),
+                # Link(rel="stylesheet", href="/css/home/home.css")  
             ),
             Body(
                 Div(cls="container")(
-                    Div(cls="sidebar")(
-                        H2("Menu"),
-                        Button("2048 Game", cls="button", onclick="window.location.href='/choose_size'"),
-                        Button("Friendship Paradox", cls="button", onclick="window.location.href='/friends'")
-                    ),
-                    Div(cls="main-content")(
-                        H1("Welcome"),
-                        P("This is the home page. Use sidebar to for other pages")
+                    Div(cls="main-content ")(
+                        H1("Welcome", cls="title is-1 has-text-centered"),
+                        P("This is a site for my mini projects in data science/games", cls="content")
                     )
                 )
             )
         )
+        
+        return BaseLayout("Home", content)

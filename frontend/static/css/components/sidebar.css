@@ -1,0 +1,56 @@
+.sidebar {
+    width: 200px;
+    background-color: var(--dark-purple);
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    height: 100%; /* Ensure the sidebar spans the full height of the page */
+    position: fixed; /* Keep the sidebar fixed on the left */
+    top: 0;
+    left: 0;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    font-size: 24px;
+}
+
+.sidebar .button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #ffa500;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.sidebar .button:hover {
+    background-color: #ff8c00;
+}
+
+/* Ensure the parent container spans the full height */
+.columns {
+    height: 100vh; /* Full height of the viewport */
+    margin: 0; /* Remove any default margin */
+}
+
+/* Ensure the sidebar spans the full height */
+.column.is-1 {
+    background-color: #333; /* Dark background for the sidebar */
+    color: white; /* White text for the sidebar */
+    height: 100%; /* Full height of the parent container */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: space-between; /* Optional: Space items evenly */
+}
+
+/* Ensure the main content spans the full height */
+.column.has-background-white-ter {
+    height: 100%; /* Full height of the parent container */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+}
