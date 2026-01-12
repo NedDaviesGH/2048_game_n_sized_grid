@@ -9,6 +9,7 @@ cycler==0.12.1
 fastcore==1.7.29
 fastlite==0.1.2
 fh-matplotlib==0.0.4
+fh_plotly
 fonttools==4.56.0
 h11==0.14.0
 httpcore==1.0.7
