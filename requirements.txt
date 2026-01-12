@@ -23,6 +23,7 @@ oauthlib==3.2.2
 packaging==24.2
 pandas==2.2.3
 pillow==11.1.0
+plotly
 pyparsing==3.2.3
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
