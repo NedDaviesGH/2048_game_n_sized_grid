@@ -53,7 +53,7 @@ class Board:
         if start:
             num_tiles = 2
         else:
-            num_tiles = np.random.randint(1,3)
+            num_tiles = 1
         random_idxs = self.pick_random_empty_tiles(board, num_tiles=num_tiles)
         for tile_idx in random_idxs:
             board[tuple(tile_idx)].value = 2

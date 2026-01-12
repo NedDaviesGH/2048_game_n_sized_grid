@@ -1,7 +1,7 @@
 from fasthtml.common import *
 from backend.components.layout import BaseLayout
 from .logic.friends import make_friends, analyse_friends, plot_friend_matrix, plot_popularity_distribution
-# import matplotlib.pyplot as plt
+
 
 def register_friends_routes(app):
     rt = app.route
