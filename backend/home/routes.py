@@ -15,7 +15,7 @@ def register_home_routes(app):
                 Div(cls="container")(
                     Div(cls="main-content ")(
                         H1("Welcome", cls="title is-1 has-text-centered"),
-                        P("This is a site for my mini projects in data science/games", cls="content")
+                        P("This is a site for mini projects in data science, games, and my profile", cls="content")
                     )
                 )
             )
